@@ -15,13 +15,13 @@ const Signup = () => {
     password: "",
     firstName: "",
     lastName: "",
-    phoneNumber: "",
+    userName: "",
   });
 
   // a varible to store the object
-  const { email, password, firstName, lastName, phoneNumber } = formData;
+  const { email, password, firstName, lastName, userName } = formData;
 
-  const BASE_URL = "hhtps://idan-mart.vercel.app/api/accounts"
+  const BASE_URL = "https://idan-mart.vercel.app/api/accounts"
   
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -33,41 +33,34 @@ const Signup = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    
-    try {
-      const response = await fetch("YOUR_BACKEND_API_ENDPOINT", {
-        method: "POST",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        firstName,
-        lastName,
-        phoneNumber,
-      }),
-    });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-      // Handle successful response (e.g., display success message, redirect)
+    try {
+      const response = await fetch(`${BASE_URL}/register/`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok);
+      }
+
+      const data = await response.json();
       console.log("Registration successful", data);
     } catch (error) {
-      // Handle error (e.g., display error message)
       console.error("Registration failed", error);
     }
-    };
-
-    const data = await response.json();
+  };
+  
       
-  }
-
   return (
     <div className="body">
       {" "}
       <Login />
       <div className="signup">
-        <form method="POST" action="">
+        <form onSubmit={handleFormSubmit}>
           {/* Email input */}
           <div className="input">
             <label htmlFor="email">Email Address</label>
@@ -91,6 +84,9 @@ const Signup = () => {
             <div className="divider"></div>
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange)
               placeholder="example@abc.com"
               className="inner-text"
               pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
@@ -108,6 +104,9 @@ const Signup = () => {
             <div className="divider"></div>
             <input
               type={passwordVisible ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange)
               placeholder="Wukkzksxlnmcws?"
               className="inner-text"
               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
@@ -132,6 +131,9 @@ const Signup = () => {
             <div className="divider"></div>
             <input
               type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange)
               placeholder="Lincoln"
               className="inner-text"
               required
@@ -147,13 +149,34 @@ const Signup = () => {
             <div className="divider"></div>
             <input
               type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange)
               placeholder="Wayne"
               className="inner-text"
               required
             />
           </div>
 
-          {/* Phone Number input */}
+          {/* username input */}
+          <div className="input">
+            <label htmlFor="email">username</label>
+            <div className="mail-icon">
+              <img src={user} alt="user icon" />
+            </div>
+            <div className="divider"></div>
+            <input
+              type="text"
+              name="userName"
+              value={formData.userName}
+              onChange={handleInputChange)
+              placeholder="Waynn2023"
+              className="inner-text"
+              required
+            />
+          </div>
+
+{/*           {/* Phone Number input */}
           <div className="input">
             <label htmlFor="email">Phone Number</label>
             <div className="mail-icon">
@@ -166,7 +189,7 @@ const Signup = () => {
               className="inner-text"
               required
             />
-          </div>
+          </div> */}
 
           {/* submit button */}
           <div className="submitbutton">
